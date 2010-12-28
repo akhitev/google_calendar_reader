@@ -8,7 +8,7 @@ class CalendarController < ApplicationController
     gmail_email = params[:email]
     gmail_pass  = params[:pass]
 
-    if (gmail_email.empty? || gmail_pass.empty?) then
+    if (gmail_email.nil? ||gmail_email.empty? ||gmail_pass.nil? || gmail_pass.empty?) then
       render 'calendar/_form'
     else
       client = sign_in(gmail_email, gmail_pass)
