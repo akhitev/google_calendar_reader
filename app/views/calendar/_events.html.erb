@@ -4,7 +4,7 @@
         <% @events_by_days[key].each_with_index do |event, i| %>
             <tr>
               <% if i == 0 %>
-                  <th rowspan="<%= value.size %>"> <%= to_s_hour_minute(key) %></th>
+                  <th rowspan="<%= value.size %>"> <%= to_s_date(key) %></th>
               <% end %>
               <td><%= event.start_time %> - <%= event.end_time %></td>
               <td><%= event.title %></td>

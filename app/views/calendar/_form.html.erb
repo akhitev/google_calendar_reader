@@ -1,0 +1,7 @@
+<%= form_tag(:controller => "calendar" , :action => "show") do %>
+  <%= label_tag(:email, "google email") %>
+  <%= text_field_tag(:email) %>
+  <%= label_tag(:pass, "password") %>
+  <%= password_field_tag (:pass) %>  
+  <%= submit_tag("Submit") %>
+<% end %>
