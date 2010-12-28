@@ -1,0 +1,15 @@
+<% @events_by_days.keys.sort.each do |key| %>
+    <% value = @events_by_days[key] %>
+    <% if !@events_by_days[key].empty? %>
+        <% @events_by_days[key].each_with_index do |event, i| %>
+            <tr>
+              <% if i == 0 %>
+                  <th rowspan="<%= value.size %>"> <%= to_s_hour_minute(key) %></th>
+              <% end %>
+              <td><%= event.start_time %> - <%= event.end_time %></td>
+              <td><%= event.title %></td>
+              <td><%= event.where %></td>
+            </tr>
+        <% end %>
+    <% end %>
+<% end %>

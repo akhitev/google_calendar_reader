@@ -1,0 +1,16 @@
+<tr>
+  <td colspan=3>calendar <b><%= calendar.title %></b></td>
+</tr>
+
+<% if !calendar.events.nil? %>
+
+    <% calendar.events.each do |event| %>
+        <tr>
+          <td><%= event.start_time %></td>
+          <td><%= event.end_time %></td>
+          <td><%= event.title %></td>
+          <td><%= event.where %></td>
+        </tr>
+    <% end %>
+
+<% end %>
