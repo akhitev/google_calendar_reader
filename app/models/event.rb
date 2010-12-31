@@ -7,15 +7,11 @@ class Event
 
   def initialize( xml)
     puts 'event entry'
-    puts xml.to_s
     @title = xml.xpath(".//xmlns:title").inner_text
-    puts 'css title'
-    puts xml.css("title")
-
     @end_time = Time.zone.parse(xml.xpath(".//gd:when/@endTime").to_s)
     @start_time = Time.zone.parse(xml.xpath(".//gd:when/@startTime").to_s)
     @where = xml.xpath(".//gd:where/@valueString")
-
+    puts self.to_s
   end
 
 
@@ -26,7 +22,6 @@ class Event
   def start_day
     # Time.utc(year, month, day) => time
     get_date_part_of_time @start_time
-
   end
 
 

@@ -2,14 +2,20 @@ require "gdata"
 
 class CalendarController < ApplicationController
   include CalendarHelper
-  filter_parameter_logging :pass
 
   def show
     gmail_email = params[:email]
     gmail_pass  = params[:pass]
 
+    xml_feeds   = params[:feeds]
+
     if (gmail_email.nil? ||gmail_email.empty? ||gmail_pass.nil? || gmail_pass.empty?) then
-      render 'calendar/_form'
+      if xml_feeds.nil?
+        render 'calendar/_form'
+        return
+      else
+        get_calendars_by_feed(xml_feeds)
+      end
     else
       client = sign_in(gmail_email, gmail_pass)
       puts client
@@ -18,8 +24,13 @@ class CalendarController < ApplicationController
         return
       end
       get_client_calendars(client)
-      get_events_by_days()
     end
+    @events_by_days =  group_events_by_days(@calendars)
+  end
+
+  def get_calendars_by_feed(feed)
+    @calendars = []
+      @calendars.push(Calendar.create_from_feed(feed))
   end
 
 
@@ -32,6 +43,7 @@ class CalendarController < ApplicationController
     feed.xpath("//xmlns:entry/xmlns:content/@src").each do |xml|
       if (i > 0)
         @calendars.push(Calendar.new(Nokogiri::XML(client.get(xml.to_s).body)))
+        puts xml.to_s
       end
       i = i+1
     end
@@ -49,23 +61,5 @@ class CalendarController < ApplicationController
     client
   end
 
-  def get_events_by_days
-    @events_by_days = Hash.new
-    @calendars.each do |calendar|
-      calendar.events.each do |event|
-        if ((event.start_day <=> get_date_part_of_time(Time.now)) >= 0)
-          if !@events_by_days.has_key?(event.start_day)
-            puts 'creating new array '
-            puts event
-            @events_by_days[event.start_day] = [event]
-          else
-            @events_by_days[event.start_day] << event
-            puts 'adding to array '
-            puts event
-          end
-        end
-      end
-    end
-  end
 
 end
